@@ -1,7 +1,7 @@
-import os
 import re
 from setuptools import setup
 
+# pylint:disable=invalid-name
 
 description = "Flask-PynamoDB is an extensio for integrating with PynamoDB"
 
