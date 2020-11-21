@@ -1,6 +1,7 @@
-from typing import Dict, Any
-from pynamodb.models import Model as PynamoModel
+from typing import Any, Dict
+
 from pynamodb.connection.table import TableConnection
+from pynamodb.models import Model as PynamoModel
 
 
 class Model(PynamoModel):

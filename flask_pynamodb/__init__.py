@@ -1,9 +1,9 @@
-from typing import Dict, Any
-from flask import Flask
-from flask import current_app
-from pynamodb.connection import Connection
-from flask_pynamodb.model import Model as ModelClass
+from typing import Any, Dict
 
+from flask import Flask, current_app
+from pynamodb.connection import Connection
+
+from flask_pynamodb.model import Model as ModelClass
 
 __version__ = "0.0.1"
 

@@ -1,4 +1,5 @@
 import re
+
 from setuptools import setup
 
 # pylint:disable=invalid-name
