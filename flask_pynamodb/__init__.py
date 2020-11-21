@@ -47,7 +47,7 @@ class PynamoDB:
         app.extensions["pynamodb"] = {"db": self, "connection": connection}
 
     @property
-    def connection(self):
+    def connection(self) -> Connection:
         """
         str: Base connection object, for accessing DynamoDB.
         """
@@ -63,7 +63,7 @@ class PynamoDB:
         return key.split("_", 1)[1].lower()
 
     @staticmethod
-    def _create_connection(config: Dict[str, Any]):
+    def _create_connection(config: Dict[str, Any]) -> Connection:
         connection = Connection(
             config.get("region"),
             config.get("host"),
