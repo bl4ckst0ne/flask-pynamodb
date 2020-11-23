@@ -55,7 +55,10 @@ class PynamoDB:
             return current_app.extensions["pynamodb"]["connection"]
         except KeyError:
             new_connection = self._create_connection(self.Model._app_config)
-            current_app.extensions["pynamodb"] = {"db": self, "connection": new_connection}
+            current_app.extensions["pynamodb"] = {
+                "db": self,
+                "connection": new_connection,
+            }
             return new_connection
 
     @staticmethod

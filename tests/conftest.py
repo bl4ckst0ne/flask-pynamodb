@@ -1,5 +1,6 @@
 import pytest
 from flask import Flask
+from flask.testing import Client as TestClient
 from pynamodb.attributes import BooleanAttribute, UnicodeAttribute
 
 from flask_pynamodb import PynamoDB
@@ -31,6 +32,11 @@ def app() -> Flask:
     flask_app.config.from_object(TestConfig)
 
     return flask_app
+
+
+@pytest.fixture
+def client(app: Flask) -> TestClient:
+    return app.test_client()
 
 
 @pytest.fixture
