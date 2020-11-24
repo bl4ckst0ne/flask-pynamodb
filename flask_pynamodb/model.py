@@ -33,7 +33,7 @@ class Model(PynamoModel):
             HTTPException: if the item does not exist, 404 Not Found error will be raised.
         """
 
-        message = kwargs.pop("message")
+        message = kwargs.pop("message", "")
 
         try:
             return cls.get(*args, **kwargs)
