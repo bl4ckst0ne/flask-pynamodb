@@ -1,7 +1,10 @@
-from typing import Any, Dict
+from typing import Any, Dict, TypeVar
 
+from flask import abort
 from pynamodb.connection.table import TableConnection
 from pynamodb.models import Model as PynamoModel
+
+ModelType = TypeVar("ModelType", bound="Model")
 
 
 class Model(PynamoModel):
@@ -11,6 +14,33 @@ class Model(PynamoModel):
     """
 
     _app_config: Dict[str, Any] = {}
+
+    @classmethod
+    def get_or_404(cls, *args, **kwargs) -> ModelType:
+        """
+        Gets an item and raises a 404 Not Found error if the item does not exist.
+
+        Args:
+            hash_key (str): The hash key of the desired item.
+            range_key (:obj:`str`, optional): The range key of the desired item,
+                only used when appropriate.
+            consistent_read (bool):
+            attributes_to_get (:obj:`Sequence`, optional):
+            message: Custom message for the 404 Not Found error.
+        Returns:
+            Model: An instance of the model for the desired item.
+        Raises:
+            HTTPException: if the item does not exist, 404 Not Found error will be raised.
+        """
+
+        message = kwargs.pop("message")
+
+        try:
+            return cls.get(*args, **kwargs)
+        except cls.DoesNotExist:
+            if message:
+                abort(404, message)
+            abort(404)
 
     @classmethod
     def _get_connection(cls) -> TableConnection:
