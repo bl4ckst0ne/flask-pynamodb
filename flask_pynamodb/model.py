@@ -43,6 +43,26 @@ class Model(PynamoModel):
             abort(404)
 
     @classmethod
+    def first_or_404(cls, message: str = "") -> ModelType:
+        """
+        Gets the first item from the table.
+
+        Args:
+            message: Custom message for the 404 Not Found error.
+        Returns:
+            Model: An instance of the model for the desired item.
+        Raises:
+            HTTPException: if the item does not exist, 404 Not Found error will be raised.
+        """
+
+        try:
+            return next(cls.scan(page_size=1))
+        except StopIteration:
+            if message:
+                abort(404, message)
+            abort(404)
+
+    @classmethod
     def _get_connection(cls) -> TableConnection:
         """
         Gets a (cached) connection to the database, with the application's config.

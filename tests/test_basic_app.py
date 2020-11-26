@@ -34,6 +34,22 @@ def endpoints(app: Flask, todo: PynamoDB.Model):
         todo_obj = todo.get_or_404(hash_key=todo_id, message=f"Todo {todo_id} was not found")
         return jsonify({"todo_id": todo_obj.todo_id, "name": todo_obj.name, "done": todo_obj.done})
 
+    @app.route("/first")
+    def first():
+        todo_obj = todo.first_or_404()
+        return jsonify({"todo_id": todo_obj.todo_id, "name": todo_obj.name, "done": todo_obj.done})
+
+    @app.route("/first-advanced")
+    def first_advanced():
+        todo_obj = todo.first_or_404("There are no TODOs!")
+        return jsonify({"todo_id": todo_obj.todo_id, "name": todo_obj.name, "done": todo_obj.done})
+
+    @app.route("/clear")
+    def clear():
+        todo.delete_table()
+        todo.create_table(wait=True)
+        return "", 200
+
 
 def test_list_todos(client: FlaskClient):
     response = client.get("/list")
@@ -67,3 +83,29 @@ def test_get_todo(client: FlaskClient):
 
     response = client.get("/get-advanced/invalid-id")
     assert response.status_code == 404, f"Unexpected status from get todo: {response.status_code}"
+
+
+def test_first_todo(client: FlaskClient):
+    new_todo = {"name": "test first TODO", "done": False}
+    response = client.post("/add", json=new_todo)
+    assert response.status_code == 200, f"Failed to create todo: {response.status_code}"
+
+    response1 = client.get("/first")
+    assert response1.status_code == 200, f"Failed to get todo: {response1.status_code}"
+    todo_id1 = response1.json.get("todo_id")
+    assert todo_id1, f"Invalid todo model: {response1.json}"
+
+    response2 = client.get("/first-advanced")
+    assert response2.status_code == 200, f"Failed to get todo: {response2.status_code}"
+    todo_id2 = response2.json.get("todo_id")
+    assert todo_id2, f"Invalid todo model: {response2.json}"
+
+    assert todo_id1 == todo_id2, f"Todos are different: {response1.json} {response2.json}"
+
+    response = client.get("/clear")
+    assert response.status_code == 200, f"Failed to create database: {response.status_code}"
+
+    response = client.get("/first")
+    assert response.status_code == 404, f"Unexpected status code: {response.status_code}"
+    response = client.get("/first-advanced")
+    assert response.status_code == 404, f"Unexpected status code: {response.status_code}"
