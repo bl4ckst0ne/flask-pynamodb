@@ -1,10 +1,8 @@
-from typing import Any, Dict, TypeVar
+from typing import Any, Dict
 
 from flask import abort
 from pynamodb.connection.table import TableConnection
 from pynamodb.models import Model as PynamoModel
-
-ModelType = TypeVar("ModelType", bound="Model")
 
 
 class Model(PynamoModel):
@@ -16,7 +14,7 @@ class Model(PynamoModel):
     _app_config: Dict[str, Any] = {}
 
     @classmethod
-    def get_or_404(cls, *args, **kwargs) -> ModelType:
+    def get_or_404(cls, *args, **kwargs) -> "Model":
         """
         Gets an item and raises a 404 Not Found error if the item does not exist.
 
@@ -43,7 +41,7 @@ class Model(PynamoModel):
             abort(404)
 
     @classmethod
-    def first_or_404(cls, message: str = "") -> ModelType:
+    def first_or_404(cls, message: str = "") -> "Model":
         """
         Gets the first item from the table.
 
