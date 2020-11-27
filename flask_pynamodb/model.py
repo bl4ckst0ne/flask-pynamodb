@@ -46,7 +46,7 @@ class Model(PynamoModel):
         Gets the first item from the table.
 
         Args:
-            message: Custom message for the 404 Not Found error.
+            message (str): Custom message for the 404 Not Found error.
         Returns:
             Model: An instance of the model for the desired item.
         Raises:

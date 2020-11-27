@@ -51,6 +51,7 @@ class PynamoDB:
         """
         str: Base connection object, for accessing DynamoDB.
         """
+
         try:
             return current_app.extensions["pynamodb"]["connection"]
         except KeyError:
