@@ -13,7 +13,7 @@ def endpoints(app: Flask, todo: PynamoDB.Model):
 
     @app.route("/list")
     def index():
-        return jsonify([{"todo_id": t.todo_id} for t in todo.scan()])
+        return jsonify([t.serialize() for t in todo.scan()])
 
     @app.route("/add", methods=["POST"])
     def add():
@@ -22,27 +22,34 @@ def endpoints(app: Flask, todo: PynamoDB.Model):
 
         new_todo = todo(todo_id=str(uuid4()), **request.json)
         new_todo.save()
-        return jsonify({"todo_id": new_todo.todo_id, "name": new_todo.name, "done": new_todo.done})
+        return jsonify(new_todo.serialize())
 
     @app.route("/get/<todo_id>")
     def get(todo_id: str):
-        todo_obj = todo.get_or_404(hash_key=todo_id)
-        return jsonify({"todo_id": todo_obj.todo_id, "name": todo_obj.name, "done": todo_obj.done})
+        name = request.args.get("name")
+        if not name:
+            return "Missing name", 400
+
+        return jsonify(todo.get_or_404(hash_key=todo_id, range_key=name).serialize())
 
     @app.route("/get-advanced/<todo_id>")
     def get_advanced(todo_id: str):
-        todo_obj = todo.get_or_404(hash_key=todo_id, message=f"Todo {todo_id} was not found")
-        return jsonify({"todo_id": todo_obj.todo_id, "name": todo_obj.name, "done": todo_obj.done})
+        name = request.args.get("name")
+        if not name:
+            return "Missing name", 400
+
+        todo_obj = todo.get_or_404(
+            hash_key=todo_id, range_key=name, message=f"Todo {todo_id} was not found"
+        )
+        return jsonify(todo_obj.serialize())
 
     @app.route("/first")
     def first():
-        todo_obj = todo.first_or_404()
-        return jsonify({"todo_id": todo_obj.todo_id, "name": todo_obj.name, "done": todo_obj.done})
+        return jsonify(todo.first_or_404().serialize())
 
     @app.route("/first-advanced")
     def first_advanced():
-        todo_obj = todo.first_or_404("There are no TODOs!")
-        return jsonify({"todo_id": todo_obj.todo_id, "name": todo_obj.name, "done": todo_obj.done})
+        return jsonify(todo.first_or_404("There are no TODOs!").serialize())
 
     @app.route("/clear")
     def clear():
@@ -57,36 +64,36 @@ def test_list_todos(client: FlaskClient):
 
 
 def test_add_todo(client: FlaskClient):
-    new_todo = {"name": "test TODO", "done": False}
+    new_todo = {"name": "TODO1", "done": False, "description": "test TODO"}
     response = client.post("/add", json=new_todo)
     assert response.status_code == 200, f"Unexpected status code {response.status_code}"
 
 
 def test_get_todo(client: FlaskClient):
-    new_todo = {"name": "test TODO", "done": False}
+    new_todo = {"name": "TODO2", "done": False, "description": "test TODO 2"}
     response = client.post("/add", json=new_todo)
 
     assert response.status_code == 200, f"Failed to add todo: status code {response.status_code}"
     assert "todo_id" in response.json, f"Invalid response model: {response.json}"
 
-    todo_id = response.json["todo_id"]
-    response = client.get(f"/get/{todo_id}")
+    todo_id, todo_name = response.json["todo_id"], response.json["name"]
+    response = client.get(f"/get/{todo_id}", query_string={"name": todo_name})
     assert response.status_code == 200, f"Failed to get todo: status code {response.status_code}"
     assert response.json.get("todo_id") == todo_id, f"Invalid response model: {response.json}"
 
-    response = client.get(f"/get-advanced/{todo_id}")
+    response = client.get(f"/get-advanced/{todo_id}", query_string={"name": todo_name})
     assert response.status_code == 200, f"Failed to get todo: status code {response.status_code}"
     assert response.json.get("todo_id") == todo_id, f"Invalid response model: {response.json}"
 
-    response = client.get("/get/invalid-id")
+    response = client.get("/get/invalid-id", query_string={"name": "invalid-name"})
     assert response.status_code == 404, f"Unexpected status from get todo: {response.status_code}"
 
-    response = client.get("/get-advanced/invalid-id")
+    response = client.get("/get-advanced/invalid-id", query_string={"name": "invalid_name"})
     assert response.status_code == 404, f"Unexpected status from get todo: {response.status_code}"
 
 
 def test_first_todo(client: FlaskClient):
-    new_todo = {"name": "test first TODO", "done": False}
+    new_todo = {"name": "first", "done": False, "description": "test first TODO"}
     response = client.post("/add", json=new_todo)
     assert response.status_code == 200, f"Failed to create todo: {response.status_code}"
 
