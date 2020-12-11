@@ -4,3 +4,4 @@ black
 isort
 pytest
 coverage
+pytest-mock
