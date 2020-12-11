@@ -39,6 +39,9 @@ class PynamoDB:
             self.init_app(app)
 
     def init_app(self, app: Flask):
+        if not app or not isinstance(app, Flask):
+            raise TypeError("Invalid Flask app instance.")
+
         self.Model._app_config = {
             self._convert_key(k): v for k, v in app.config.items() if k in DYNAMODB_SETTINGS
         }
