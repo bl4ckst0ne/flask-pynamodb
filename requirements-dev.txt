@@ -1,0 +1,7 @@
+pylint
+flake8
+black
+isort
+pytest
+coverage
+pytest-mock
