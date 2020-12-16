@@ -18,7 +18,7 @@ You can easily install Flask-PynamoDB with **pip**:
 
 .. code-block:: bash
 
-   python -m pip install flask-pynamodb
+   python -m pip install Flask-PynamoDB
 
 Topics
 -------

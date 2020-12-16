@@ -11,13 +11,13 @@ You can easily install Flask-PynamoDB with **pip**:
 
 .. code-block:: sh
 
-    pip install flask-pynamodb
+    pip install Flask-PynamoDB
 
 or:
 
 .. code-block:: sh
 
-    python -m pip install flask-pynamodb
+    python -m pip install Flask-PynamoDB
 
 
 Don't have pip? `Follow these instructions for installing pip <https://pip.pypa.io/en/latest/installing/>`_.
