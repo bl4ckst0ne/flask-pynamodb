@@ -60,7 +60,7 @@ Notice that you should import the attributes from `pynamodb`.
         id = UnicodeAttribute(hash_key=True)
         name = UnicodeAttribute()
         description = UnicodeAttribute()
-        done = BooleanAttribute(defult=False)
+        done = BooleanAttribute(default=False)
 
 
 Now, we can use the regular functions from *PynamoDB*, such as ``get``, ``scan``, ``save``, etc.
