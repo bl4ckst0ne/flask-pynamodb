@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Basic Application</title>
+</head>
+<body>
+    <h1>To Do List</h1>
+    <ul>
+        {% for todo in todos %}
+            {% if not todo.done %}
+                <li>{{ todo.name }}: {{ todo.description }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,9 @@
+import os
+
+
+class Config:
+    DYNAMODB_HOST = os.environ.get("DYNAMODB_HOST", "http://localhost:8000")
+    DYNAMODB_AWS_ACCESS_KEY_ID = os.environ.get("DYNAMODB_AWS_ACCESS_KEY_ID", "test")
+    DYNAMODB_AWS_SECRET_ACCESS_KEY = os.environ.get("DYNAMODB_AWS_SECRET_ACCESS_KEY", "test")
+    DYNAMODB_READ_CAPACITY_UNITS = os.environ.get("DYNAMODB_READ_CAPACITY_UNITS", 10)
+    DYNAMODB_WRITE_CAPACITY_UNITS = os.environ.get("DYNAMODB_WRITE_CAPACITY_UNITS", 10)
