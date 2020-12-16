@@ -1,6 +1,9 @@
 # Flask-PynamoDB
 
 [![codecov](https://codecov.io/gh/bl4ckst0ne/flask-pynamodb/branch/main/graph/badge.svg)](https://codecov.io/gh/bl4ckst0ne/flask-pynamodb)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![PyPI](https://img.shields.io/pypi/v/Flask-PynamoDB)
+![Python](https://img.shields.io/pypi/pyversions/Flask-PynamoDB.svg)
 
 
 Flask-PynamoDB is an externsion for [Flask](https://flask.palletsprojects.com/en/1.1.x/) that integrates with [DynamoDB](https://aws.amazon.com/dynamodb/) using the powerful [PynamoDB](https://pynamodb.readthedocs.io/en/latest/) library.
