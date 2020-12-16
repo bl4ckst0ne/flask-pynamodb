@@ -5,7 +5,7 @@ from pynamodb.connection import Connection
 
 from flask_pynamodb.model import Model as ModelClass
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 DYNAMODB_SETTINGS = (
