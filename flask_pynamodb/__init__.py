@@ -27,7 +27,13 @@ DYNAMODB_SETTINGS = (
 
 class PynamoDB:
     """
-    The main class for initializing and managing PynamoDB.
+    The main class for initializing and managing PynamoDB integration to one / multiple
+    Flask applications.
+
+    Attributes:
+        app (Flask): The Flask application that uses DynamoDB. For using more that one app,
+            you should use ``init_app`` method. Please note the model class supports a configuration
+            of one app only.
     """
 
     Model = ModelClass
@@ -39,6 +45,16 @@ class PynamoDB:
             self.init_app(app)
 
     def init_app(self, app: Flask):
+        """
+        Initializes a Flask application for using the integration.
+        Currently, the model class supports a single app configuration only.
+        Therefore, if there are multiple app configurations for this integration,
+            the configuration will be overriden.
+
+        Args:
+            app (Flask): The flask application to initialize.
+        """
+
         if not app or not isinstance(app, Flask):
             raise TypeError("Invalid Flask app instance.")
 
