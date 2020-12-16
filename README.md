@@ -1,11 +1,11 @@
-# Flask-Pynamodb
+# Flask-PynamoDB
 
 [![codecov](https://codecov.io/gh/bl4ckst0ne/flask-pynamodb/branch/main/graph/badge.svg)](https://codecov.io/gh/bl4ckst0ne/flask-pynamodb)
 
 
-Flask-Pynamo is an externsion for [Flask](https://flask.palletsprojects.com/en/1.1.x/) that integrates with [DynamoDB](https://aws.amazon.com/dynamodb/) using the powerful [PynamoDB](https://pynamodb.readthedocs.io/en/latest/) library.
+Flask-PynamoDB is an externsion for [Flask](https://flask.palletsprojects.com/en/1.1.x/) that integrates with [DynamoDB](https://aws.amazon.com/dynamodb/) using the powerful [PynamoDB](https://pynamodb.readthedocs.io/en/latest/) library.
 
-Flask-Pynamo simplfies the configuration of PynamoDB for your application, as well as adds utilities for better integration with PynamoDB.
+Flask-PynamoDB simplfies the configuration of PynamoDB for your application, as well as adds utilities for better integration with PynamoDB.
 
 ## Installation
 
