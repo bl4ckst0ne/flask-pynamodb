@@ -4,7 +4,7 @@ from setuptools import setup
 
 # pylint:disable=invalid-name
 
-description = "Flask-PynamoDB is an extensio for integrating with PynamoDB"
+description = "Flask-PynamoDB is an extension for integrating with PynamoDB"
 
 with open("flask_pynamodb/__init__.py") as init_file:
     version = re.search(r'__version__ = "(.*?)"', init_file.read()).group(1)
@@ -21,6 +21,7 @@ setup(
     author_email="bl4ckst0ne1@gmail.com",
     description=description,
     long_description=long_description,
+    long_description_content_type='text/markdown',
     packages=["flask_pynamodb"],
     zip_safe=False,
     include_package_data=True,
@@ -29,7 +30,7 @@ setup(
     classifiers=[
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
-        "License :: MIT License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3 :: Only",
