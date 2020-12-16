@@ -58,9 +58,9 @@ class PynamoDB:
         if not app or not isinstance(app, Flask):
             raise TypeError("Invalid Flask app instance.")
 
-        self.Model._app_config = {
-            self._convert_key(k): v for k, v in app.config.items() if k in DYNAMODB_SETTINGS
-        }
+        self.Model._app_config.update(
+            {self._convert_key(k): v for k, v in app.config.items() if k in DYNAMODB_SETTINGS}
+        )
 
         connection = self._create_connection(self.Model._app_config)
         app.extensions["pynamodb"] = {"db": self, "connection": connection}
