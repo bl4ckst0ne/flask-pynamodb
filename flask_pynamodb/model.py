@@ -75,7 +75,7 @@ class Model(PynamoModel):
             return super()._get_connection()
 
         for key, value in cls._app_config.items():
-            if not getattr(meta, key, None):
+            if getattr(meta, key, None) != value:
                 setattr(meta, key, value)
 
         return super()._get_connection()
